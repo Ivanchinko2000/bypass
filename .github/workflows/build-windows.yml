@@ -22,10 +22,10 @@ jobs:
       - name: 📥 Клонирование репозитория
         uses: actions/checkout@v4
 
-      - name: 🐹 Установка Go 1.23
+      - name: 🐹 Установка Go 1.25
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23'
+          go-version: '1.25'
 
       - name: 📦 Установка Node.js 22
         uses: actions/setup-node@v4
@@ -49,8 +49,7 @@ jobs:
       - name: 🏗️ Сборка Windows EXE
         working-directory: client-windows
         run: |
-          wails build -platform windows/amd64 -clean -o bypass-vpn.exe 2>&1 || \
-          wails build -platform windows/amd64 -o bypass-vpn.exe 2>&1 || true
+          wails build -platform windows/amd64 -o bypass-vpn.exe 2>&1
 
       - name: 🔍 Поиск EXE-файла
         id: find-exe
