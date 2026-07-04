@@ -34,7 +34,7 @@ jobs:
 
       - name: 📦 Установка npm-зависимостей
         working-directory: client-windows/frontend
-        run: npm ci
+        run: npm install
 
       - name: 🖥️ Установка Wails CLI
         run: |
