@@ -13,9 +13,6 @@ on:
       - 'client-core/**'
       - 'go.work'
       - '.github/workflows/build-windows.yml'
-
-  # При создании тега (релиз)
-  push:
     tags:
       - 'v*'
 
