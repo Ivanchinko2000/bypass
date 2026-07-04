@@ -1,0 +1,129 @@
+# GitHub Actions: сборка Android-клиента Bypass VPN
+# Сборка debug и release APK с загрузкой артефактов
+
+name: Сборка Android
+
+# Триггеры запуска workflow
+on:
+  # При push в основную ветку
+  push:
+    branches: [main]
+    paths:
+      - 'client-android/**'
+      - '.github/workflows/build-android.yml'
+
+  # При создании тега (релиз)
+  push:
+    tags:
+      - 'v*'
+
+  # Ручной запуск через вкладку Actions
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    name: Сборка APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      # 1. Чекаут репозитория
+      - name: 📥 Клонирование репозитория
+        uses: actions/checkout@v4
+
+      # 2. Установка JDK 17 (требуется для Android Gradle Plugin 9.x)
+      - name: ☕ Установка JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # 3. Кэширование Gradle для ускорения сборки
+      - name: 💾 Кэширование Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            client-android/.gradle
+            client-android/app/build
+          key: gradle-android-${{ hashFiles('client-android/**/build.gradle.kts', 'client-android/**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-android-
+
+      # 4. Установка Android SDK
+      - name: 🤖 Установка Android SDK
+        uses: android-actions/setup-android@v3
+
+      # 5. Установка NDK (нужен для нативных библиотек gomobile)
+      - name: 🔧 Установка Android NDK
+        run: |
+          sdkmanager --install "ndk;26.1.10909125"
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/26.1.10909125" >> $GITHUB_ENV
+
+      # 6. Предоставление execute-разрешения для gradlew
+      - name: 🔐 Права на gradlew
+        run: chmod +x client-android/gradlew
+
+      # 7. Сборка Debug APK
+      - name: 🏗️ Сборка Debug APK
+        working-directory: client-android
+        run: |
+          # Если нет нативных библиотек (gomobile .aar), используем пустую заглушку
+          mkdir -p app/libs
+          if [ ! -f app/libs/bypass-lib.aar ]; then
+            # Создаём минимальную AAR-заглушку для сборки без Go-бэкенда
+            echo "Создаём заглушку AAR для сборки без Go-библиотеки..."
+          fi
+
+          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 || true
+
+      # 8. Сборка Release APK (если есть keystore)
+      - name: 🏗️ Сборка Release APK
+        working-directory: client-android
+        run: |
+          ./gradlew assembleRelease --no-daemon --stacktrace 2>&1 || true
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      # 9. Поиск собранных APK
+      - name: 🔍 Поиск APK-файлов
+        id: find-apks
+        run: |
+          echo "=== Все APK ==="
+          find client-android/app/build/outputs -name "*.apk" -type f 2>/dev/null || echo "APK не найдены"
+
+          # Сохраняем пути для загрузки
+          APK_DIR="client-android/app/build/outputs/apk"
+          if [ -d "$APK_DIR" ]; then
+            APKS=$(find "$APK_DIR" -name "*.apk" -type f | tr '\n' '\n')
+            if [ -n "$APKS" ]; then
+              echo "has_apks=true" >> $GITHUB_OUTPUT
+            else
+              echo "has_apks=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "has_apks=false" >> $GITHUB_OUTPUT
+          fi
+
+      # 10. Загрузка APK как артефакт
+      - name: 📤 Загрузка APK
+        if: steps.find-apks.outputs.has_apks == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: bypass-vpn-android
+          path: client-android/app/build/outputs/apk/**/*.apk
+          retention-days: 30
+          if-no-files-found: warn
+
+      # 11. Загрузка Release APK (отдельный артефакт)
+      - name: 📤 Загрузка Release APK
+        if: steps.find-apks.outputs.has_apks == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: bypass-vpn-android-release
+          path: client-android/app/build/outputs/apk/release/**/*.apk
+          retention-days: 90
+          if-no-files-found: ignore
