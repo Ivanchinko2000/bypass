@@ -1,0 +1,25 @@
+# Geo-блоклист: сервисы, географически недоступные в РФ
+# Запросы к этим доменам направляются через VLESS+Reality туннель к ЕС-серверу.
+# Формат: по одному домену на строку, без протокола.
+# Пустые строки и строки начинающиеся с # игнорируются.
+
+# AI-сервисы
+chatgpt.com
+www.chatgpt.com
+openai.com
+www.openai.com
+claude.ai
+www.claude.ai
+anthropic.com
+www.anthropic.com
+gemini.google.com
+midjourney.com
+www.midjourney.com
+character.ai
+www.character.ai
+perplexity.ai
+www.perplexity.ai
+poe.com
+www.poe.com
+huggingface.co
+www.huggingface.co

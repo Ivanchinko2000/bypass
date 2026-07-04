@@ -1,0 +1,44 @@
+[
+  {
+    "id": "ivan",
+    "password": "MySecretPassword123",
+    "device_id": "",
+    "vless_uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "wg_public_key": "",
+    "wg_ip": "",
+    "active": true,
+    "created": "2025-01-15",
+    "expires": "2025-12-31",
+    "description": "Иван, личный телефон",
+    "traffic_used_mb": 0,
+    "last_seen": ""
+  },
+  {
+    "id": "anna_laptop",
+    "password": "AnnaPass456",
+    "device_id": "",
+    "vless_uuid": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+    "wg_public_key": "",
+    "wg_ip": "",
+    "active": true,
+    "created": "2025-02-01",
+    "expires": "",
+    "description": "Анна, ноутбук (бессрочно)",
+    "traffic_used_mb": 0,
+    "last_seen": ""
+  },
+  {
+    "id": "friend_max",
+    "password": "Friend789xyz",
+    "device_id": "",
+    "vless_uuid": "c3d4e5f6-a7b8-9012-cdef-123456789012",
+    "wg_public_key": "",
+    "wg_ip": "",
+    "active": false,
+    "created": "2025-01-20",
+    "expires": "2025-03-01",
+    "description": "Макс, временный доступ (истёк)",
+    "traffic_used_mb": 1542.7,
+    "last_seen": "2025-02-28 14:30:00"
+  }
+]

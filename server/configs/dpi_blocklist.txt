@@ -1,0 +1,46 @@
+# DPI-блоклист: домены, блокируемые РКН по сигнатурам (TLS SNI, HTTP Host)
+# Эти домены перенаправляются через Zapret nfqws для обхода DPI.
+# Формат: по одному домену на строку, без протокола.
+# Пустые строки и строки начинающиеся с # игнорируются.
+
+# Видео
+youtube.com
+www.youtube.com
+youtu.be
+m.youtube.com
+youtubei.googleapis.com
+youtube-nocookie.com
+dailymotion.com
+www.dailymotion.com
+twitch.tv
+www.twitch.tv
+vimeo.com
+www.vimeo.com
+tiktok.com
+www.tiktok.com
+
+# Соцсети
+instagram.com
+www.instagram.com
+facebook.com
+www.facebook.com
+twitter.com
+x.com
+www.twitter.com
+linkedin.com
+www.linkedin.com
+reddit.com
+www.reddit.com
+discord.com
+www.discord.com
+discordapp.com
+discord.gg
+medium.com
+www.medium.com
+imgur.com
+www.imgur.com
+netflix.com
+www.netflix.com
+telegram.org
+www.telegram.org
+t.me

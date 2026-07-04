@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BypassVPN</title>
+  <style>
+    :root {
+      --bg: #0f0f14;
+      --bg-2: #16161e;
+      --bg-3: #1e1e2a;
+      --surface: #1a1a24;
+      --border: #2a2a3a;
+      --border-2: #222233;
+      --text: #e4e4ef;
+      --text-2: #a0a0b8;
+      --text-3: #6e6e88;
+      --text-4: #44445a;
+      --accent: #6c5ce7;
+      --accent-hover: #7d6ff0;
+      --green: #00d68f;
+      --red: #ff4757;
+      --orange: #ffa502;
+      --blue: #3742fa;
+      --shadow: 0 8px 32px rgba(0,0,0,0.4);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    #root { height: 100vh; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-4); }
+    input, select, button { font-family: inherit; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
